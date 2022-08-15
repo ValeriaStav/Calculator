@@ -20,13 +20,13 @@ jobs:
         dotnet-version: 6.0.x
 
     - name: Restore Dependencies
-      run: dotnet restore CM.Fundamentals.sln
+      run: dotnet restore Calculator.sln
 
     - name: Build
-      run: dotnet build CM.Fundamentals.sln --configuration Release --no-restore
+      run: dotnet build Calculator.sln --configuration Release --no-restore
 
     - name: Test
-      run: dotnet test CM.Fundamentals.sln --configuration Release --no-build --verbosity normal --collect:"XPlat Code Coverage" --results-directory ./coverage
+      run: dotnet test Calculator.sln --configuration Release --no-build --verbosity normal --collect:"XPlat Code Coverage" --results-directory ./coverage
 
     - name: Code Coverage Report
       uses: irongut/CodeCoverageSummary@v1.3.0
