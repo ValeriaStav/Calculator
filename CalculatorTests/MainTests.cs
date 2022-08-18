@@ -1,10 +1,6 @@
 ﻿using Calculator;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace CalculatorTests
 {
@@ -23,7 +19,7 @@ namespace CalculatorTests
             var stringReader = new StringReader(stringBuilder.ToString());
             Console.SetIn(stringReader);
             Program.Main(Array.Empty<string>());
-            var expectedResult = "Console Calculator in C#" +
+            var expectedResult = "MyConsole Calculator in C#" +
                                  "------------------------" +
                                  "Type a number, and then press Enter: " +
                                  "Type another number, and then press Enter: " +
@@ -39,6 +35,38 @@ namespace CalculatorTests
             Assert.Equal(expectedResult, Regex.Replace(stringWriter.ToString(), @"[\r\t\n]+", string.Empty));
 
         }
+
+        [Fact]
+        public void ShouldDoRunWithMockConsole()
+        {
+            MockConsole mockConsole = new MockConsole();
+            Program program = new Program();
+            program.MyConsole = mockConsole;
+            var stringWriter = new StringWriter();
+            Console.SetOut(stringWriter);
+            var stringBuilder = new StringBuilder();
+            mockConsole.Output.Enqueue("12");
+            mockConsole.Output.Enqueue("10");
+            mockConsole.Output.Enqueue("a");
+            mockConsole.Output.Enqueue("n");
+            program.RunCalculator();
+            var expectedResult = "MyConsole Calculator in C#" +
+                                 "------------------------" +
+                                 "Type a number, and then press Enter: " +
+                                 "Type another number, and then press Enter: " +
+                                 "Choose an operator from the following list:" +
+                                 "a - Add" +
+                                 "s - Subtract" +
+                                 "m - Multiply" +
+                                 "d - Divide" +
+                                 "Your option? " +
+                                 "Your result: 22" +
+                                 "------------------------" +
+                                 "Press 'n' and Enter to close the app, or press any other key and Enter to continue: ";
+            Assert.Equal(expectedResult, Regex.Replace(mockConsole.Inputs.ToString(), @"[\r\t\n]+", string.Empty));
+
+        }
+
         [Fact]
         public void ShouldDoRunWith()
         {
@@ -54,7 +82,7 @@ namespace CalculatorTests
             var stringReader = new StringReader(stringBuilder.ToString());
             Console.SetIn(stringReader);
             Program.Main(Array.Empty<string>());
-            var expectedResult = "Console Calculator in C#" +
+            var expectedResult = "MyConsole Calculator in C#" +
                                  "------------------------" +
                                  "Type a number, and then press Enter: " +
                                  "This is not valid input. Please enter an integer value: " +
@@ -89,7 +117,7 @@ namespace CalculatorTests
 
 
             Program.Main(Array.Empty<string>());
-            var expectedResult = "Console Calculator in C#" +
+            var expectedResult = "MyConsole Calculator in C#" +
                                  "------------------------" +
                                  "Type a number, and then press Enter: " +
                                  "Type another number, and then press Enter: " +
